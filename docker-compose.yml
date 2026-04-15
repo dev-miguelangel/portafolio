@@ -15,9 +15,7 @@ services:
       retries: 5
 
   api:
-    build:
-      context: .
-      dockerfile: apps/api/Dockerfile
+    image: ghcr.io/dev-miguelangel/portafolio-api:latest
     restart: unless-stopped
     depends_on:
       db:
@@ -36,9 +34,7 @@ services:
       - "3000"
 
   web:
-    build:
-      context: .
-      dockerfile: apps/web/Dockerfile
+    image: ghcr.io/dev-miguelangel/portafolio-web:latest
     restart: unless-stopped
     depends_on:
       - api
@@ -51,7 +47,6 @@ services:
     depends_on:
       - web
       - api
-    # expose en lugar de ports — Coolify/Traefik maneja el puerto externo 80/443
     expose:
       - "80"
     volumes:

@@ -51,8 +51,9 @@ services:
     depends_on:
       - web
       - api
-    ports:
-      - "80:80"
+    # expose en lugar de ports — Coolify/Traefik maneja el puerto externo 80/443
+    expose:
+      - "80"
     volumes:
       - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
 

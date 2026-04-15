@@ -1,0 +1,22 @@
+{
+  "name": "portafolio",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "apps/web",
+    "apps/api"
+  ],
+  "scripts": {
+    "web": "npm run start -w apps/web",
+    "api": "npm run start:dev -w apps/api",
+    "dev": "concurrently \"npm run api\" \"npm run web\"",
+    "build:web": "npm run build -w apps/web",
+    "build:api": "npm run build -w apps/api",
+    "build": "npm run build:api && npm run build:web",
+    "lint": "npm run lint -w apps/web && npm run lint -w apps/api",
+    "test": "npm run test -w apps/web && npm run test -w apps/api"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}

@@ -1,0 +1,10 @@
+node_modules
+**/node_modules
+**/.angular
+**/dist
+**/.git
+**/.env
+**/*.log
+**/coverage
+docker
+docs

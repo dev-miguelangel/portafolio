@@ -1,0 +1,58 @@
+/* Google Material Icons — @import must come before @tailwind */
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined');
+/* Inter + JetBrains Mono */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    @apply scroll-smooth;
+  }
+
+  body {
+    @apply bg-brand-dark text-white font-sans antialiased;
+  }
+
+  * {
+    @apply box-border;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-brand-green text-brand-dark font-semibold text-sm transition-all duration-200 hover:opacity-90 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center gap-2 px-5 py-2.5 rounded-lg border border-white/10 text-white/70 font-medium text-sm transition-all duration-200 hover:border-white/30 hover:text-white active:scale-95;
+  }
+
+  .card {
+    @apply rounded-xl border border-white/5 bg-white/[0.03] p-6 transition-all duration-200 hover:border-white/10 hover:bg-white/[0.05];
+  }
+
+  .input-field {
+    @apply w-full rounded-lg border border-white/10 bg-white/[0.04] px-4 py-3 text-sm text-white placeholder-white/30 outline-none transition-colors duration-200 focus:border-brand-green/50 focus:bg-white/[0.06];
+  }
+
+  .label {
+    @apply block text-xs font-medium text-white/50 mb-1.5 uppercase tracking-wider;
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    @apply bg-gradient-to-r from-white to-white/40 bg-clip-text text-transparent;
+  }
+
+  .text-gradient-green {
+    @apply bg-gradient-to-r from-brand-green to-brand-green/60 bg-clip-text text-transparent;
+  }
+
+  .glow-green {
+    box-shadow: 0 0 40px -10px rgba(0, 232, 121, 0.3);
+  }
+}

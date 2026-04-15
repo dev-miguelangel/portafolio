@@ -42,15 +42,13 @@ services:
       - "80"
 
   nginx:
-    image: nginx:1.27-alpine
+    image: ghcr.io/dev-miguelangel/portafolio-nginx:latest
     restart: unless-stopped
     depends_on:
       - web
       - api
     expose:
       - "80"
-    volumes:
-      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
 
 volumes:
   postgres_data:

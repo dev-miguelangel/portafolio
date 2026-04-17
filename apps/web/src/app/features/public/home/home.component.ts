@@ -12,25 +12,25 @@ import { IconComponent } from '../../../shared/components/icon/icon.component';
   imports: [RouterLink, ProjectCardComponent, NewsletterFormComponent, IconComponent],
   template: `
     <!-- Hero -->
-    <section class="max-w-6xl mx-auto px-6 pt-24 pb-16">
+    <section class="max-w-6xl mx-auto px-4 sm:px-6 pt-16 sm:pt-24 pb-12 sm:pb-16">
       <div class="max-w-2xl">
-        <div class="flex items-center gap-2 mb-6">
+        <div class="flex items-center gap-2 mb-5 sm:mb-6">
           <span class="w-2 h-2 rounded-full bg-brand-green animate-pulse"></span>
           <span class="text-xs text-white/40 font-mono">Disponible para colaborar</span>
         </div>
 
-        <h1 class="text-5xl sm:text-6xl font-bold leading-tight mb-6">
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight mb-5 sm:mb-6">
           <span class="text-gradient">Hola, soy Miguelángel.</span><br />
           <span class="text-gradient-green">Construyo software</span><br />
           <span class="text-white/60">que resuelve problemas reales.</span>
         </h1>
 
-        <p class="text-base text-white/50 leading-relaxed max-w-xl mb-8">
+        <p class="text-sm sm:text-base text-white/50 leading-relaxed max-w-xl mb-7 sm:mb-8">
           Entusiasta creador de software enfocado en soluciones simples para problemas
           cotidianos y flujos complejos. Aquí comparto mis ideas, proyectos y avances.
         </p>
 
-        <div class="flex items-center gap-3">
+        <div class="flex flex-wrap items-center gap-3">
           <a routerLink="/proyectos" class="btn-primary">
             <app-icon name="grid_view" [size]="16" />
             Ver proyectos
@@ -44,9 +44,9 @@ import { IconComponent } from '../../../shared/components/icon/icon.component';
     </section>
 
     <!-- Projects preview -->
-    <section class="max-w-6xl mx-auto px-6 pb-20">
-      <div class="flex items-center justify-between mb-8">
-        <h2 class="text-xl font-semibold text-white/80">Proyectos recientes</h2>
+    <section class="max-w-6xl mx-auto px-4 sm:px-6 pb-16 sm:pb-20">
+      <div class="flex items-center justify-between mb-6 sm:mb-8">
+        <h2 class="text-lg sm:text-xl font-semibold text-white/80">Proyectos recientes</h2>
         <a routerLink="/proyectos" class="text-sm text-white/40 hover:text-brand-green transition-colors flex items-center gap-1">
           Ver todos
           <app-icon name="arrow_forward" [size]="14" />
@@ -54,13 +54,13 @@ import { IconComponent } from '../../../shared/components/icon/icon.component';
       </div>
 
       @if (projects()?.length) {
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
           @for (project of projects()!.slice(0, 6); track project.id) {
             <app-project-card [project]="project" />
           }
         </div>
       } @else {
-        <div class="text-center py-16 text-white/20">
+        <div class="text-center py-12 sm:py-16 text-white/20">
           <app-icon name="folder_open" [size]="40" variant="outlined" />
           <p class="mt-3 text-sm">Proyectos próximamente</p>
         </div>
@@ -69,11 +69,11 @@ import { IconComponent } from '../../../shared/components/icon/icon.component';
 
     <!-- Newsletter CTA -->
     <section class="border-t border-white/5">
-      <div class="max-w-6xl mx-auto px-6 py-20 text-center">
-        <h2 class="text-2xl font-bold text-white mb-3">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 py-14 sm:py-20 text-center">
+        <h2 class="text-xl sm:text-2xl font-bold text-white mb-3">
           Mantente al tanto
         </h2>
-        <p class="text-white/40 text-sm mb-8 max-w-md mx-auto">
+        <p class="text-white/40 text-sm mb-7 sm:mb-8 max-w-md mx-auto">
           Suscríbete para recibir actualizaciones sobre nuevas ideas, proyectos y avances directamente en tu correo.
         </p>
         <app-newsletter-form />

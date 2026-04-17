@@ -59,6 +59,17 @@ import { IconComponent } from '../../../shared/components/icon/icon.component';
                 ></textarea>
               </div>
 
+              <div>
+                <label class="label">Fecha de publicación</label>
+                <input
+                  type="datetime-local"
+                  name="publishedAt"
+                  [(ngModel)]="form.publishedAt"
+                  class="input-field"
+                />
+                <p class="text-xs text-white/30 mt-1">Déjalo vacío para guardar como borrador.</p>
+              </div>
+
               <div class="flex items-center gap-3 mt-2">
                 <button type="submit" class="btn-primary" [disabled]="saving()">
                   @if (saving()) {

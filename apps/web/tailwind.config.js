@@ -15,5 +15,12 @@ module.exports = {
       },
     },
   },
+  safelist: [
+    'rotate-45',
+    '-rotate-45',
+    'translate-y-[6.5px]',
+    '-translate-y-[6.5px]',
+    'opacity-0',
+  ],
   plugins: [],
 };

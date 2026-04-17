@@ -1,9 +1,10 @@
 import { Component, signal, HostListener } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-navbar',
-  imports: [RouterLink, RouterLinkActive],
+  imports: [RouterLink, RouterLinkActive, NgClass],
   template: `
     <header class="fixed top-0 left-0 right-0 z-50 border-b border-white/5 bg-brand-dark/80 backdrop-blur-md">
       <nav class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
@@ -41,11 +42,11 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
           aria-label="Abrir menú"
         >
           <span class="block w-5 h-px bg-white/70 transition-all duration-300"
-                [class.rotate-45]="open()" [class.translate-y-[6.5px]]="open()"></span>
+                [ngClass]="open() ? 'rotate-45 translate-y-[6.5px]' : ''"></span>
           <span class="block w-5 h-px bg-white/70 transition-all duration-300"
-                [class.opacity-0]="open()"></span>
+                [ngClass]="open() ? 'opacity-0' : ''"></span>
           <span class="block w-5 h-px bg-white/70 transition-all duration-300"
-                [class.-rotate-45]="open()" [class.-translate-y-[6.5px]]="open()"></span>
+                [ngClass]="open() ? '-rotate-45 -translate-y-[6.5px]' : ''"></span>
         </button>
       </nav>
 

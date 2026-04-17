@@ -18,17 +18,17 @@ import { IconComponent } from '../../../shared/components/icon/icon.component';
       @if (newsletter()) {
         <article>
           <header class="mb-10">
-            <p class="text-xs text-white/25 font-mono mb-3">
+            <p class="text-xs text-white/40 font-mono mb-3">
               {{ newsletter()!.publishedAt | date: 'dd MMMM yyyy' }}
             </p>
             <h1 class="text-2xl font-bold text-white mb-2">
               {{ newsletter()!.title }}
             </h1>
-            <p class="text-white/40 text-sm">{{ newsletter()!.summary }}</p>
+            <p class="text-white/60 text-sm">{{ newsletter()!.summary }}</p>
           </header>
 
           <div
-            class="prose prose-invert prose-sm max-w-none text-white/60 leading-relaxed"
+            class="prose prose-invert prose-sm max-w-none text-white/80 leading-relaxed"
             [innerHTML]="newsletter()!.content"
           ></div>
         </article>

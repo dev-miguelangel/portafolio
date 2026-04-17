@@ -30,13 +30,13 @@ import { IconComponent } from '../../../shared/components/icon/icon.component';
               class="card flex items-start justify-between gap-4 group"
             >
               <div class="flex-1 min-w-0">
-                <p class="font-medium text-white/80 group-hover:text-white transition-colors truncate">
+                <p class="font-medium text-white/90 group-hover:text-white transition-colors truncate">
                   {{ item.title }}
                 </p>
-                <p class="text-sm text-white/30 mt-1 line-clamp-1">{{ item.summary }}</p>
+                <p class="text-sm text-white/50 mt-1 line-clamp-1">{{ item.summary }}</p>
               </div>
               <div class="flex items-center gap-3 shrink-0">
-                <span class="text-xs text-white/20">
+                <span class="text-xs text-white/40">
                   {{ item.publishedAt | date: 'dd MMM yyyy' }}
                 </span>
                 <app-icon name="arrow_forward" [size]="14" class="text-white/20 group-hover:text-brand-green transition-colors" />

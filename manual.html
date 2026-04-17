@@ -1,0 +1,1125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Manual de Trabajo — Portafolio Monorepo</title>
+  <style>
+    :root {
+      --bg: #0f1117;
+      --surface: #1a1d27;
+      --surface2: #22263a;
+      --border: #2e3350;
+      --accent: #6c63ff;
+      --accent2: #ff6584;
+      --green: #4ade80;
+      --yellow: #facc15;
+      --blue: #60a5fa;
+      --red: #f87171;
+      --text: #e2e8f0;
+      --text-muted: #94a3b8;
+      --code-bg: #0d1117;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    /* ── Layout ─────────────────────────────────── */
+    .layout { display: flex; min-height: 100vh; }
+
+    nav {
+      width: 260px;
+      min-width: 260px;
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      padding: 28px 0;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+    }
+
+    nav .logo {
+      padding: 0 24px 24px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 16px;
+    }
+    nav .logo h1 { font-size: 14px; font-weight: 700; color: var(--accent); letter-spacing: .05em; text-transform: uppercase; }
+    nav .logo p { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+
+    nav a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 24px;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 13px;
+      transition: all .15s;
+      border-left: 3px solid transparent;
+    }
+    nav a:hover { color: var(--text); background: var(--surface2); }
+    nav a.active { color: var(--accent); border-left-color: var(--accent); background: var(--surface2); }
+    nav .section-title {
+      padding: 16px 24px 6px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    main {
+      flex: 1;
+      max-width: 860px;
+      padding: 48px 56px;
+      overflow-x: hidden;
+    }
+
+    /* ── Typography ──────────────────────────────── */
+    h2 {
+      font-size: 26px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    h2 .icon { font-size: 28px; }
+
+    h3 { font-size: 17px; font-weight: 600; color: var(--text); margin: 28px 0 10px; }
+    h4 { font-size: 14px; font-weight: 600; color: var(--text-muted); margin: 20px 0 8px; text-transform: uppercase; letter-spacing: .05em; }
+
+    p { color: var(--text-muted); margin-bottom: 12px; }
+    p strong { color: var(--text); }
+
+    section {
+      margin-bottom: 64px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+    section:first-of-type { border-top: none; }
+
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 14px;
+      margin-bottom: 28px;
+    }
+
+    /* ── Steps ───────────────────────────────────── */
+    .steps { display: flex; flex-direction: column; gap: 16px; margin: 20px 0; }
+
+    .step {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 18px 20px;
+      position: relative;
+    }
+    .step-num {
+      min-width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .step-content { flex: 1; }
+    .step-content h4 { margin: 0 0 6px; color: var(--text); font-size: 14px; font-weight: 600; text-transform: none; letter-spacing: 0; }
+    .step-content p { margin: 0 0 8px; font-size: 13px; }
+    .step-content p:last-child { margin-bottom: 0; }
+
+    /* ── Code blocks ─────────────────────────────── */
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px 18px;
+      overflow-x: auto;
+      margin: 10px 0;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    code {
+      font-family: 'Fira Code', 'Cascadia Code', 'JetBrains Mono', monospace;
+      color: var(--green);
+    }
+
+    pre code { color: var(--text); }
+
+    .comment { color: #6272a4; }
+    .cmd { color: var(--green); }
+    .kw { color: var(--accent); }
+    .str { color: var(--yellow); }
+    .url { color: var(--blue); }
+
+    code.inline {
+      background: var(--surface2);
+      color: var(--accent);
+      padding: 2px 7px;
+      border-radius: 4px;
+      font-size: 13px;
+    }
+
+    /* ── Callouts ────────────────────────────────── */
+    .callout {
+      display: flex;
+      gap: 12px;
+      padding: 14px 16px;
+      border-radius: 8px;
+      margin: 16px 0;
+      font-size: 13px;
+    }
+    .callout-icon { font-size: 18px; flex-shrink: 0; line-height: 1.4; }
+    .callout p { margin: 0; }
+
+    .callout.info { background: #1e2d4a; border: 1px solid #2563eb44; color: #93c5fd; }
+    .callout.tip { background: #14291f; border: 1px solid #16a34a44; color: #86efac; }
+    .callout.warn { background: #2d1f0e; border: 1px solid #d9770644; color: #fcd34d; }
+    .callout.danger { background: #2d0e0e; border: 1px solid #dc262644; color: #fca5a5; }
+
+    /* ── Badges / Tags ───────────────────────────── */
+    .badge {
+      display: inline-block;
+      padding: 2px 9px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+      margin-right: 4px;
+    }
+    .badge.api { background: #1e3a5f; color: var(--blue); }
+    .badge.web { background: #2d1f4f; color: #c084fc; }
+    .badge.both { background: #1a2e1a; color: var(--green); }
+    .badge.test { background: #2d2005; color: var(--yellow); }
+
+    /* ── URL table ───────────────────────────────── */
+    .url-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin: 16px 0;
+    }
+    .url-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px 16px;
+    }
+    .url-card .label { font-size: 11px; text-transform: uppercase; letter-spacing: .07em; color: var(--text-muted); margin-bottom: 4px; }
+    .url-card a { color: var(--blue); font-size: 13px; font-family: monospace; text-decoration: none; }
+    .url-card a:hover { text-decoration: underline; }
+
+    /* ── Flow diagram ────────────────────────────── */
+    .flow {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 16px 0;
+      padding: 16px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+    }
+    .flow-item {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 8px 14px;
+      font-size: 13px;
+      font-weight: 500;
+    }
+    .flow-arrow { color: var(--text-muted); font-size: 18px; }
+
+    /* ── Tabs ────────────────────────────────────── */
+    .tabs { margin: 16px 0; }
+    .tab-buttons { display: flex; gap: 4px; margin-bottom: -1px; }
+    .tab-btn {
+      padding: 8px 18px;
+      border: 1px solid var(--border);
+      border-bottom: none;
+      border-radius: 6px 6px 0 0;
+      background: var(--surface);
+      color: var(--text-muted);
+      font-size: 13px;
+      cursor: pointer;
+      transition: all .15s;
+    }
+    .tab-btn.active { background: var(--surface2); color: var(--text); border-color: var(--border); }
+    .tab-content { display: none; border: 1px solid var(--border); border-radius: 0 8px 8px 8px; background: var(--surface2); padding: 20px; }
+    .tab-content.active { display: block; }
+
+    /* ── Divider ─────────────────────────────────── */
+    hr { border: none; border-top: 1px solid var(--border); margin: 28px 0; }
+
+    /* ── Responsive ──────────────────────────────── */
+    @media (max-width: 900px) {
+      nav { display: none; }
+      main { padding: 24px 20px; max-width: 100%; }
+      .url-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="layout">
+
+  <!-- ── Sidebar ──────────────────────────────────────────── -->
+  <nav>
+    <div class="logo">
+      <h1>Portafolio Monorepo</h1>
+      <p>Guía de trabajo local</p>
+    </div>
+
+    <div class="section-title">Introducción</div>
+    <a href="#estructura">📁 Estructura del proyecto</a>
+    <a href="#setup">⚙️ Setup inicial</a>
+
+    <div class="section-title">Flujo de trabajo</div>
+    <a href="#flujo-general">🔄 Flujo general</a>
+    <a href="#cambios-api">🟦 Cambios en la API</a>
+    <a href="#cambios-web">🟣 Cambios en el Front</a>
+    <a href="#cambios-ambos">🟢 Cambios en ambos</a>
+
+    <div class="section-title">Testing</div>
+    <a href="#tests-api">🧪 Tests API (Jest)</a>
+    <a href="#tests-web">🧪 Tests Web (Vitest)</a>
+
+    <div class="section-title">Referencia</div>
+    <a href="#comandos">⚡ Comandos rápidos</a>
+    <a href="#urls">🌐 URLs locales</a>
+    <a href="#envs">🔑 Variables de entorno</a>
+    <a href="#cloudbeaver">🐘 CloudBeaver (DB UI)</a>
+  </nav>
+
+  <!-- ── Content ──────────────────────────────────────────── -->
+  <main>
+
+    <!-- HEADER -->
+    <div style="margin-bottom: 48px;">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+        <span style="font-size:36px;">📘</span>
+        <div>
+          <h2 style="font-size:28px;border:none;margin:0;">Manual de Trabajo</h2>
+          <p style="margin:0;font-size:14px;">Angular 21 + NestJS + PostgreSQL — Flujo de trabajo en monorepo</p>
+        </div>
+      </div>
+      <div class="callout info">
+        <span class="callout-icon">💡</span>
+        <p>Este manual asume que ya completaste el <strong>setup inicial</strong>. Si es la primera vez que abres el proyecto, comienza por la sección <strong>Setup inicial</strong>.</p>
+      </div>
+    </div>
+
+    <!-- ── 1. ESTRUCTURA ──────────────────────────────────── -->
+    <section id="estructura">
+      <h2><span class="icon">📁</span> Estructura del proyecto</h2>
+      <p class="subtitle">Cómo está organizado el monorepo y qué hace cada parte.</p>
+
+      <pre><code><span class="comment"># Raíz del monorepo</span>
+portafolio/
+├── apps/
+│   ├── web/              <span class="comment"># Frontend Angular 21</span>
+│   └── api/              <span class="comment"># Backend NestJS 11</span>
+├── docker/
+│   └── nginx/            <span class="comment"># Reverse proxy (producción)</span>
+├── docs/                 <span class="comment"># Documentación adicional</span>
+├── .env.example          <span class="comment"># Variables de entorno (prod)</span>
+├── docker-compose.yml    <span class="comment"># Stack completo (prod)</span>
+├── docker-compose.dev.yml <span class="comment"># Solo PostgreSQL (dev)</span>
+└── package.json          <span class="comment"># Scripts raíz del monorepo</span></code></pre>
+
+      <h3>¿Qué es un monorepo?</h3>
+      <p>Es un único repositorio Git que contiene múltiples proyectos relacionados (<code class="inline">web</code> y <code class="inline">api</code>). Desde la raíz puedes ejecutar comandos que afectan a ambos. Cada workspace en <code class="inline">apps/</code> tiene su propio <code class="inline">package.json</code> y puede ejecutarse de forma independiente.</p>
+
+      <div class="callout tip">
+        <span class="callout-icon">✅</span>
+        <p>Todos los comandos de este manual se ejecutan desde la <strong>raíz del proyecto</strong>, salvo que se indique lo contrario.</p>
+      </div>
+    </section>
+
+    <!-- ── 2. SETUP INICIAL ───────────────────────────────── -->
+    <section id="setup">
+      <h2><span class="icon">⚙️</span> Setup inicial</h2>
+      <p class="subtitle">Solo necesitas hacer esto una vez al clonar el repositorio.</p>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <h4>Instalar dependencias</h4>
+            <p>Instala todas las dependencias de la raíz y de ambos workspaces (<code class="inline">web</code> y <code class="inline">api</code>) con un solo comando:</p>
+            <pre><code><span class="cmd">npm install</span></code></pre>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <h4>Crear el archivo de entorno de la API</h4>
+            <p>Copia el template y edítalo con tus valores locales:</p>
+            <pre><code><span class="cmd">cp apps/api/.env.example apps/api/.env</span></code></pre>
+            <p>El archivo por defecto ya tiene valores para desarrollo local:</p>
+            <pre><code>NODE_ENV=development
+PORT=3000
+DB_HOST=localhost
+DB_PORT=5432
+DB_USER=postgres
+DB_PASS=postgres
+DB_NAME=portafolio
+JWT_SECRET=super-secret-change-me
+JWT_EXPIRES_IN=7d
+ADMIN_EMAIL=admin@example.com
+ADMIN_PASSWORD=change-me</code></pre>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <h4>Levantar la base de datos con Docker</h4>
+            <p>El entorno de desarrollo solo necesita PostgreSQL en Docker. El código corre directamente en tu máquina con hot-reload:</p>
+            <pre><code><span class="cmd">docker compose -f docker-compose.dev.yml up -d</span>
+
+<span class="comment"># Verifica que el contenedor esté corriendo</span>
+<span class="cmd">docker compose -f docker-compose.dev.yml ps</span></code></pre>
+            <div class="callout tip">
+              <span class="callout-icon">🐳</span>
+              <p>Esto levanta <strong>solo PostgreSQL</strong> en el puerto <code class="inline">5432</code>. La API y el frontend corren directamente en tu máquina, no en Docker.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-content">
+            <h4>Iniciar el entorno de desarrollo completo</h4>
+            <p>Desde la raíz, este comando inicia la API y el frontend en paralelo con hot-reload:</p>
+            <pre><code><span class="cmd">npm run dev</span>
+
+<span class="comment"># O por separado si prefieres ver los logs divididos:</span>
+<span class="cmd">npm run api</span>   <span class="comment"># Terminal 1 → NestJS en :3000</span>
+<span class="cmd">npm run web</span>   <span class="comment"># Terminal 2 → Angular en :4200</span></code></pre>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">5</div>
+          <div class="step-content">
+            <h4>Verificar que todo funciona</h4>
+            <p>Abre estas URLs en tu navegador:</p>
+            <div class="url-grid">
+              <div class="url-card">
+                <div class="label">Frontend</div>
+                <a href="http://localhost:4200" target="_blank">http://localhost:4200</a>
+              </div>
+              <div class="url-card">
+                <div class="label">API Health Check</div>
+                <a href="http://localhost:3000/api" target="_blank">http://localhost:3000/api</a>
+              </div>
+            </div>
+            <p>La API también crea automáticamente el usuario admin al iniciar (usando <code class="inline">ADMIN_EMAIL</code> y <code class="inline">ADMIN_PASSWORD</code> del <code class="inline">.env</code>).</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── 3. FLUJO GENERAL ───────────────────────────────── -->
+    <section id="flujo-general">
+      <h2><span class="icon">🔄</span> Flujo general de trabajo</h2>
+      <p class="subtitle">El ciclo que sigues para cualquier tipo de cambio.</p>
+
+      <div class="flow">
+        <div class="flow-item">🌿 Rama nueva</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-item">✏️ Editar código</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-item">👀 Ver resultado</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-item">🧪 Correr tests</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-item">✅ Commit</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-item">🚀 Push + CI/CD</div>
+      </div>
+
+      <h3>Antes de cualquier cambio — crea una rama</h3>
+      <p>Nunca trabajes directamente en <code class="inline">main</code>. Crea siempre una rama descriptiva:</p>
+      <pre><code><span class="comment"># Formato: tipo/descripcion-corta</span>
+<span class="cmd">git checkout -b feat/nueva-seccion-portfolio</span>
+<span class="cmd">git checkout -b fix/error-login-jwt</span>
+<span class="cmd">git checkout -b chore/actualizar-dependencias</span></code></pre>
+
+      <h3>Confirmar cambios con Conventional Commits</h3>
+      <p>El proyecto usa mensajes de commit estructurados:</p>
+      <pre><code><span class="kw">feat</span>: agregar endpoint de contacto
+<span class="kw">fix</span>: corregir validación de email en newsletter
+<span class="kw">chore</span>: actualizar versión de Angular
+<span class="kw">docs</span>: actualizar README con nuevos endpoints
+<span class="kw">style</span>: ajustar spacing en hero section
+<span class="kw">refactor</span>: extraer lógica de auth a servicio separado
+<span class="kw">test</span>: agregar tests al módulo de proyectos</code></pre>
+
+      <div class="callout info">
+        <span class="callout-icon">🤖</span>
+        <p>Cuando haces push a <code class="inline">main</code> (vía PR), GitHub Actions compila ambas imágenes Docker y las sube a GHCR. Coolify las detecta y despliega automáticamente.</p>
+      </div>
+    </section>
+
+    <!-- ── 4. CAMBIOS EN LA API ───────────────────────────── -->
+    <section id="cambios-api">
+      <h2><span class="icon">🟦</span> Cambios en la API (NestJS)</h2>
+      <p class="subtitle"><span class="badge api">API</span> Todo lo relacionado con <code class="inline">apps/api/</code></p>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <h4>Asegúrate de que el entorno esté corriendo</h4>
+            <pre><code><span class="comment"># PostgreSQL en Docker</span>
+<span class="cmd">docker compose -f docker-compose.dev.yml up -d</span>
+
+<span class="comment"># API con hot-reload (desde raíz)</span>
+<span class="cmd">npm run api</span></code></pre>
+            <p>La API se recargará automáticamente cada vez que guardes un archivo en <code class="inline">apps/api/src/</code>.</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <h4>Estructura de un módulo NestJS</h4>
+            <p>Para agregar funcionalidad nueva, sigue este patrón. Por ejemplo, un módulo <code class="inline">contact</code>:</p>
+            <pre><code>apps/api/src/modules/contact/
+├── contact.module.ts      <span class="comment"># Declara el módulo</span>
+├── contact.controller.ts  <span class="comment"># Define los endpoints (rutas)</span>
+├── contact.service.ts     <span class="comment"># Lógica de negocio</span>
+├── dto/
+│   └── create-contact.dto.ts  <span class="comment"># Validación de datos entrantes</span>
+├── entities/
+│   └── contact.entity.ts  <span class="comment"># Modelo de base de datos</span>
+└── contact.spec.ts        <span class="comment"># Tests unitarios</span></code></pre>
+            <p>Luego importas el módulo en <code class="inline">app.module.ts</code>.</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <h4>Probar los endpoints manualmente</h4>
+            <p>Usa curl, Postman, o Insomnia. Primero obtén el JWT:</p>
+            <pre><code><span class="comment"># 1. Login para obtener el token</span>
+<span class="cmd">curl -X POST http://localhost:3000/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"email":"admin@example.com","password":"change-me"}'</span>
+
+<span class="comment"># 2. Usar el token en rutas protegidas</span>
+<span class="cmd">curl http://localhost:3000/api/projects \
+  -H "Authorization: Bearer TU_TOKEN_AQUI"</span>
+
+<span class="comment"># Endpoints públicos (sin token)</span>
+<span class="cmd">curl http://localhost:3000/api/projects   <span class="comment"># GET proyectos</span>
+curl http://localhost:3000/api/newsletter  <span class="comment"># GET newsletter</span></span></code></pre>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-content">
+            <h4>Ejecutar los tests</h4>
+            <pre><code><span class="comment"># Tests unitarios (desde raíz o desde apps/api)</span>
+<span class="cmd">npm run test --workspace=apps/api</span>
+
+<span class="comment"># Con watch mode (se re-ejecutan al guardar)</span>
+<span class="cmd">cd apps/api && npm run test:watch</span>
+
+<span class="comment"># Con reporte de cobertura</span>
+<span class="cmd">cd apps/api && npm run test:cov</span>
+
+<span class="comment"># Tests E2E (necesita la DB corriendo)</span>
+<span class="cmd">cd apps/api && npm run test:e2e</span></code></pre>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">5</div>
+          <div class="step-content">
+            <h4>Verificar tipos y lint</h4>
+            <pre><code><span class="comment"># Lint solo la API</span>
+<span class="cmd">cd apps/api && npm run lint</span>
+
+<span class="comment"># O desde la raíz (lint ambos)</span>
+<span class="cmd">npm run lint</span></code></pre>
+          </div>
+        </div>
+      </div>
+
+      <h3>Ejemplo completo — agregar un nuevo endpoint</h3>
+      <div class="callout tip">
+        <span class="callout-icon">📝</span>
+        <p>Supongamos que quieres agregar <code class="inline">GET /api/skills</code> para listar habilidades técnicas.</p>
+      </div>
+
+      <h4>Paso A — Crear la entidad</h4>
+      <pre><code><span class="comment">// apps/api/src/modules/skills/entities/skill.entity.ts</span>
+<span class="kw">import</span> { Entity, PrimaryGeneratedColumn, Column } from <span class="str">'typeorm'</span>;
+
+@Entity()
+<span class="kw">export class</span> Skill {
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @Column()
+  name: string;
+
+  @Column()
+  level: number;  <span class="comment">// 1-100</span>
+}</code></pre>
+
+      <h4>Paso B — Crear el módulo</h4>
+      <pre><code><span class="comment">// apps/api/src/modules/skills/skills.module.ts</span>
+<span class="kw">import</span> { Module } from <span class="str">'@nestjs/common'</span>;
+<span class="kw">import</span> { TypeOrmModule } from <span class="str">'@nestjs/typeorm'</span>;
+<span class="kw">import</span> { Skill } from <span class="str">'./entities/skill.entity'</span>;
+<span class="kw">import</span> { SkillsController } from <span class="str">'./skills.controller'</span>;
+<span class="kw">import</span> { SkillsService } from <span class="str">'./skills.service'</span>;
+
+@Module({
+  imports: [TypeOrmModule.forFeature([Skill])],
+  controllers: [SkillsController],
+  providers: [SkillsService],
+})
+<span class="kw">export class</span> SkillsModule {}</code></pre>
+
+      <h4>Paso C — Registrar en app.module.ts</h4>
+      <pre><code><span class="comment">// apps/api/src/app.module.ts — agrega SkillsModule al array imports</span>
+imports: [
+  <span class="comment">// ... otros módulos existentes</span>
+  SkillsModule,
+],</code></pre>
+
+      <p>La API se recargará automáticamente y TypeORM creará la tabla <code class="inline">skill</code> en PostgreSQL (porque <code class="inline">synchronize: true</code> está activo en desarrollo).</p>
+
+      <div class="callout warn">
+        <span class="callout-icon">⚠️</span>
+        <p><strong>synchronize: true</strong> solo es seguro en desarrollo. En producción se usan migraciones para no perder datos.</p>
+      </div>
+    </section>
+
+    <!-- ── 5. CAMBIOS EN EL FRONT ─────────────────────────── -->
+    <section id="cambios-web">
+      <h2><span class="icon">🟣</span> Cambios en el Frontend (Angular)</h2>
+      <p class="subtitle"><span class="badge web">WEB</span> Todo lo relacionado con <code class="inline">apps/web/</code></p>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <h4>Iniciar el servidor de desarrollo</h4>
+            <pre><code><span class="cmd">npm run web</span>   <span class="comment"># Desde raíz → http://localhost:4200</span>
+
+<span class="comment"># O directamente dentro del workspace</span>
+<span class="cmd">cd apps/web && npm start</span></code></pre>
+            <p>Angular recompila y recarga el navegador automáticamente al guardar cualquier archivo.</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <h4>Estructura del frontend</h4>
+            <pre><code>apps/web/src/app/
+├── core/
+│   ├── guards/       <span class="comment"># AuthGuard (rutas protegidas)</span>
+│   ├── interceptors/ <span class="comment"># Agrega JWT a las peticiones</span>
+│   └── services/     <span class="comment"># AuthService, etc.</span>
+├── features/
+│   ├── public/       <span class="comment"># Home, proyectos, newsletter (sin login)</span>
+│   └── admin/        <span class="comment"># Dashboard, CRUD (requiere login)</span>
+└── shared/           <span class="comment"># Componentes reutilizables</span></code></pre>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <h4>Crear un componente nuevo</h4>
+            <p>Usa Angular CLI desde dentro del workspace:</p>
+            <pre><code><span class="cmd">cd apps/web</span>
+
+<span class="comment"># Componente público (standalone)</span>
+<span class="cmd">npx ng generate component features/public/skills --standalone</span>
+
+<span class="comment"># Componente en admin</span>
+<span class="cmd">npx ng generate component features/admin/skills-manager --standalone</span>
+
+<span class="comment"># Servicio para consumir la API</span>
+<span class="cmd">npx ng generate service core/services/skills</span></code></pre>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-content">
+            <h4>Consumir la API desde Angular</h4>
+            <p>El <code class="inline">HttpInterceptor</code> ya agrega el JWT automáticamente a las peticiones. Solo necesitas inyectar <code class="inline">HttpClient</code>:</p>
+            <pre><code><span class="comment">// apps/web/src/app/core/services/skills.service.ts</span>
+<span class="kw">import</span> { Injectable } from <span class="str">'@angular/core'</span>;
+<span class="kw">import</span> { HttpClient } from <span class="str">'@angular/common/http'</span>;
+<span class="kw">import</span> { environment } from <span class="str">'../../environments/environment'</span>;
+
+@Injectable({ providedIn: <span class="str">'root'</span> })
+<span class="kw">export class</span> SkillsService {
+  private url = <span class="str">`${environment.apiUrl}/skills`</span>;
+
+  constructor(<span class="kw">private</span> http: HttpClient) {}
+
+  getAll() {
+    <span class="kw">return this</span>.http.get(<span class="kw">this</span>.url);
+  }
+}</code></pre>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">5</div>
+          <div class="step-content">
+            <h4>Agregar una ruta nueva</h4>
+            <pre><code><span class="comment">// apps/web/src/app/app.routes.ts</span>
+<span class="kw">export const</span> routes: Routes = [
+  <span class="comment">// Ruta pública</span>
+  {
+    path: <span class="str">'skills'</span>,
+    loadComponent: () =>
+      <span class="kw">import</span>(<span class="str">'./features/public/skills/skills'</span>)
+        .then(m => m.SkillsComponent)
+  },
+  <span class="comment">// Ruta protegida (admin)</span>
+  {
+    path: <span class="str">'admin/skills'</span>,
+    canActivate: [AuthGuard],
+    loadComponent: () =>
+      <span class="kw">import</span>(<span class="str">'./features/admin/skills-manager/skills-manager'</span>)
+        .then(m => m.SkillsManagerComponent)
+  },
+];</code></pre>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">6</div>
+          <div class="step-content">
+            <h4>Ejecutar los tests</h4>
+            <pre><code><span class="comment"># Tests unitarios con Vitest</span>
+<span class="cmd">npm run test --workspace=apps/web</span>
+
+<span class="comment"># O desde dentro del workspace</span>
+<span class="cmd">cd apps/web && npm test</span>
+
+<span class="comment"># Watch mode (recomendado durante desarrollo)</span>
+<span class="cmd">cd apps/web && npm test -- --watch</span></code></pre>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">7</div>
+          <div class="step-content">
+            <h4>Verificar el build de producción</h4>
+            <p>Antes de hacer PR, confirma que el build optimizado funciona:</p>
+            <pre><code><span class="cmd">npm run build:web</span>
+
+<span class="comment"># Los archivos compilados quedan en apps/web/dist/</span></code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── 6. CAMBIOS EN AMBOS ────────────────────────────── -->
+    <section id="cambios-ambos">
+      <h2><span class="icon">🟢</span> Cambios que afectan API y Front</h2>
+      <p class="subtitle"><span class="badge both">AMBOS</span> El flujo más común — nueva feature de principio a fin.</p>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <h4>Empieza siempre por la API</h4>
+            <p>Define el contrato (endpoint, datos que envía y recibe) antes de tocar el frontend. Esto evita cambios de interfaz a mitad de camino.</p>
+            <pre><code><span class="comment"># 1. Implementa el endpoint en apps/api/</span>
+<span class="comment"># 2. Pruébalo con curl o Postman</span>
+<span class="comment"># 3. Confirma la estructura de la respuesta JSON</span>
+<span class="comment"># 4. Recién entonces pasa al frontend</span></code></pre>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <h4>Corre ambos en paralelo</h4>
+            <pre><code><span class="cmd">npm run dev</span>   <span class="comment"># API :3000 + Frontend :4200 simultáneos</span></code></pre>
+            <p>Así puedes ver el resultado en el navegador mientras editas tanto la API como el frontend.</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <h4>Tests antes del commit</h4>
+            <pre><code><span class="comment"># Corre TODOS los tests del monorepo</span>
+<span class="cmd">npm run test</span>
+
+<span class="comment"># Lint de todo el monorepo</span>
+<span class="cmd">npm run lint</span>
+
+<span class="comment"># Build completo (simula lo que hace CI/CD)</span>
+<span class="cmd">npm run build</span></code></pre>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-content">
+            <h4>Commit y push</h4>
+            <pre><code><span class="cmd">git add apps/api/src/modules/skills/</span>
+<span class="cmd">git add apps/web/src/app/features/public/skills/</span>
+<span class="cmd">git commit -m "feat: agregar módulo de skills con endpoint y vista"</span>
+<span class="cmd">git push origin feat/modulo-skills</span></code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── 7. TESTS API ───────────────────────────────────── -->
+    <section id="tests-api">
+      <h2><span class="icon">🧪</span> Tests de la API — Jest</h2>
+      <p class="subtitle"><span class="badge test">TEST</span> Framework: Jest. Archivos: <code class="inline">*.spec.ts</code> dentro de <code class="inline">apps/api/src/</code></p>
+
+      <h3>Tipos de tests disponibles</h3>
+
+      <div class="tabs">
+        <div class="tab-buttons">
+          <button class="tab-btn active" onclick="showTab(event,'unit')">Unitarios</button>
+          <button class="tab-btn" onclick="showTab(event,'e2e')">E2E</button>
+          <button class="tab-btn" onclick="showTab(event,'coverage')">Cobertura</button>
+        </div>
+        <div class="tab-content active" id="unit">
+          <h4>Tests unitarios</h4>
+          <p>Prueban servicios y lógica de negocio de forma aislada (sin BD real).</p>
+          <pre><code><span class="cmd">cd apps/api && npm test</span>
+
+<span class="comment"># Solo un archivo específico</span>
+<span class="cmd">npm test -- --testPathPattern=projects.service</span>
+
+<span class="comment"># Watch mode</span>
+<span class="cmd">npm run test:watch</span></code></pre>
+          <h4>Ejemplo de test unitario</h4>
+          <pre><code><span class="comment">// apps/api/src/modules/skills/skills.service.spec.ts</span>
+describe(<span class="str">'SkillsService'</span>, () => {
+  let service: SkillsService;
+
+  beforeEach(<span class="kw">async</span> () => {
+    const module = <span class="kw">await</span> Test.createTestingModule({
+      providers: [
+        SkillsService,
+        { provide: getRepositoryToken(Skill), useValue: mockRepo },
+      ],
+    }).compile();
+
+    service = module.get(SkillsService);
+  });
+
+  it(<span class="str">'should return all skills'</span>, <span class="kw">async</span> () => {
+    <span class="kw">const</span> result = <span class="kw">await</span> service.findAll();
+    expect(result).toHaveLength(2);
+  });
+});</code></pre>
+        </div>
+        <div class="tab-content" id="e2e">
+          <h4>Tests E2E (end-to-end)</h4>
+          <p>Levantan la aplicación completa y hacen peticiones HTTP reales a la BD.</p>
+          <div class="callout warn">
+            <span class="callout-icon">⚠️</span>
+            <p>Requieren que PostgreSQL esté corriendo: <code class="inline">docker compose -f docker-compose.dev.yml up -d</code></p>
+          </div>
+          <pre><code><span class="cmd">cd apps/api && npm run test:e2e</span></code></pre>
+        </div>
+        <div class="tab-content" id="coverage">
+          <h4>Reporte de cobertura</h4>
+          <p>Genera un reporte HTML en <code class="inline">apps/api/coverage/</code></p>
+          <pre><code><span class="cmd">cd apps/api && npm run test:cov</span>
+
+<span class="comment"># Abre el reporte visual</span>
+<span class="cmd">open apps/api/coverage/lcov-report/index.html</span></code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── 8. TESTS WEB ───────────────────────────────────── -->
+    <section id="tests-web">
+      <h2><span class="icon">🧪</span> Tests del Frontend — Vitest</h2>
+      <p class="subtitle"><span class="badge test">TEST</span> Framework: Vitest. Archivos: <code class="inline">*.spec.ts</code> dentro de <code class="inline">apps/web/src/</code></p>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <h4>Ejecutar los tests</h4>
+            <pre><code><span class="comment"># Desde la raíz</span>
+<span class="cmd">npm run test --workspace=apps/web</span>
+
+<span class="comment"># O desde el workspace</span>
+<span class="cmd">cd apps/web && npm test</span></code></pre>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <h4>Ejemplo de test de componente Angular</h4>
+            <pre><code><span class="comment">// apps/web/src/app/features/public/skills/skills.spec.ts</span>
+<span class="kw">import</span> { TestBed } from <span class="str">'@angular/core/testing'</span>;
+<span class="kw">import</span> { SkillsComponent } from <span class="str">'./skills'</span>;
+
+describe(<span class="str">'SkillsComponent'</span>, () => {
+  beforeEach(<span class="kw">async</span> () => {
+    <span class="kw">await</span> TestBed.configureTestingModule({
+      imports: [SkillsComponent],
+    }).compileComponents();
+  });
+
+  it(<span class="str">'should create'</span>, () => {
+    const fixture = TestBed.createComponent(SkillsComponent);
+    expect(fixture.componentInstance).toBeTruthy();
+  });
+});</code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── 9. COMANDOS RÁPIDOS ────────────────────────────── -->
+    <section id="comandos">
+      <h2><span class="icon">⚡</span> Comandos rápidos de referencia</h2>
+      <p class="subtitle">Todos se ejecutan desde la raíz del proyecto.</p>
+
+      <h3>Desarrollo</h3>
+      <pre><code><span class="cmd">npm run dev</span>          <span class="comment"># API + Frontend en paralelo</span>
+<span class="cmd">npm run api</span>          <span class="comment"># Solo NestJS (hot-reload)</span>
+<span class="cmd">npm run web</span>          <span class="comment"># Solo Angular (hot-reload)</span></code></pre>
+
+      <h3>Build</h3>
+      <pre><code><span class="cmd">npm run build</span>        <span class="comment"># Build de ambos</span>
+<span class="cmd">npm run build:api</span>    <span class="comment"># Solo API</span>
+<span class="cmd">npm run build:web</span>    <span class="comment"># Solo Frontend</span></code></pre>
+
+      <h3>Tests</h3>
+      <pre><code><span class="cmd">npm run test</span>                              <span class="comment"># Tests de ambos</span>
+<span class="cmd">npm run test --workspace=apps/api</span>         <span class="comment"># Solo API</span>
+<span class="cmd">npm run test --workspace=apps/web</span>         <span class="comment"># Solo Frontend</span>
+<span class="cmd">cd apps/api && npm run test:watch</span>         <span class="comment"># API en watch mode</span>
+<span class="cmd">cd apps/api && npm run test:e2e</span>          <span class="comment"># E2E (necesita DB)</span>
+<span class="cmd">cd apps/api && npm run test:cov</span>          <span class="comment"># Cobertura API</span></code></pre>
+
+      <h3>Lint</h3>
+      <pre><code><span class="cmd">npm run lint</span>         <span class="comment"># Lint de ambos workspaces</span></code></pre>
+
+      <h3>Docker (base de datos)</h3>
+      <pre><code><span class="cmd">docker compose -f docker-compose.dev.yml up -d</span>    <span class="comment"># Levantar DB</span>
+<span class="cmd">docker compose -f docker-compose.dev.yml down</span>     <span class="comment"># Detener DB</span>
+<span class="cmd">docker compose -f docker-compose.dev.yml ps</span>       <span class="comment"># Estado</span>
+<span class="cmd">docker compose -f docker-compose.dev.yml logs db</span>  <span class="comment"># Logs PostgreSQL</span></code></pre>
+
+      <h3>Git</h3>
+      <pre><code><span class="cmd">git checkout -b feat/nombre-feature</span>    <span class="comment"># Nueva rama</span>
+<span class="cmd">git add apps/api/src/modules/nuevo/</span>     <span class="comment"># Staging selectivo</span>
+<span class="cmd">git add apps/web/src/app/features/nuevo/</span>
+<span class="cmd">git commit -m "feat: descripción"</span>
+<span class="cmd">git push origin feat/nombre-feature</span></code></pre>
+    </section>
+
+    <!-- ── 10. URLs ───────────────────────────────────────── -->
+    <section id="urls">
+      <h2><span class="icon">🌐</span> URLs locales</h2>
+
+      <div class="url-grid">
+        <div class="url-card">
+          <div class="label">Frontend Angular</div>
+          <a href="http://localhost:4200">http://localhost:4200</a>
+        </div>
+        <div class="url-card">
+          <div class="label">API Base URL</div>
+          <a href="http://localhost:3000/api">http://localhost:3000/api</a>
+        </div>
+        <div class="url-card">
+          <div class="label">Login Admin</div>
+          <a href="http://localhost:4200/admin/login">http://localhost:4200/admin/login</a>
+        </div>
+        <div class="url-card">
+          <div class="label">PostgreSQL (puerto)</div>
+          <span style="color:var(--text-muted);font-size:13px;font-family:monospace;">localhost:5432</span>
+        </div>
+      </div>
+
+      <h3>Endpoints de la API</h3>
+      <pre><code><span class="comment"># Públicos</span>
+GET  <span class="url">http://localhost:3000/api</span>               <span class="comment"># Health check</span>
+GET  <span class="url">http://localhost:3000/api/projects</span>       <span class="comment"># Lista proyectos</span>
+GET  <span class="url">http://localhost:3000/api/newsletter</span>     <span class="comment"># Newsletter activa</span>
+POST <span class="url">http://localhost:3000/api/auth/login</span>     <span class="comment"># Login → JWT</span>
+POST <span class="url">http://localhost:3000/api/subscribers</span>   <span class="comment"># Suscribirse</span>
+
+<span class="comment"># Protegidos (requieren Authorization: Bearer TOKEN)</span>
+POST   <span class="url">http://localhost:3000/api/projects</span>     <span class="comment"># Crear proyecto</span>
+PATCH  <span class="url">http://localhost:3000/api/projects/:id</span> <span class="comment"># Actualizar</span>
+DELETE <span class="url">http://localhost:3000/api/projects/:id</span> <span class="comment"># Eliminar</span>
+POST   <span class="url">http://localhost:3000/api/newsletter</span>   <span class="comment"># Crear newsletter</span>
+GET    <span class="url">http://localhost:3000/api/subscribers</span>  <span class="comment"># Ver suscritos</span></code></pre>
+    </section>
+
+    <!-- ── 11. ENV VARS ───────────────────────────────────── -->
+    <section id="envs">
+      <h2><span class="icon">🔑</span> Variables de entorno</h2>
+
+      <div class="callout danger">
+        <span class="callout-icon">🚫</span>
+        <p>Nunca hagas commit de archivos <code class="inline">.env</code> con valores reales. Solo comitea los <code class="inline">.env.example</code>.</p>
+      </div>
+
+      <h3>apps/api/.env — Desarrollo local</h3>
+      <pre><code>NODE_ENV=development
+PORT=3000
+DB_HOST=localhost        <span class="comment"># PostgreSQL en Docker local</span>
+DB_PORT=5432
+DB_USER=postgres
+DB_PASS=postgres
+DB_NAME=portafolio
+JWT_SECRET=super-secret-change-me
+JWT_EXPIRES_IN=7d
+ADMIN_EMAIL=admin@example.com
+ADMIN_PASSWORD=change-me</code></pre>
+
+      <h3>Verificar que la API lee las variables</h3>
+      <pre><code><span class="comment"># Si la API arranca sin errores de DB, las variables están bien</span>
+<span class="cmd">npm run api</span>
+
+<span class="comment"># Si hay error de conexión, revisa:</span>
+<span class="comment"># 1. ¿Está corriendo Docker? → docker compose -f docker-compose.dev.yml ps</span>
+<span class="comment"># 2. ¿Existe apps/api/.env? → ls apps/api/.env</span>
+<span class="comment"># 3. ¿DB_HOST=localhost? (no 'db' como en producción)</span></code></pre>
+    </section>
+
+    <!-- ── 12. CLOUDBEAVER ───────────────────────────────────── -->
+    <section id="cloudbeaver">
+      <h2><span class="icon">🐘</span> CloudBeaver — UI para la base de datos</h2>
+      <p class="subtitle">Cliente web para ejecutar queries SQL directamente contra PostgreSQL, incluido en el <code class="inline">docker-compose.yml</code>.</p>
+
+      <h3>Cómo acceder</h3>
+      <p>CloudBeaver corre como un servicio más del stack. En Coolify debes exponer el puerto <code class="inline">8978</code> asignándole un dominio o subdominio.</p>
+
+      <div class="url-grid">
+        <div class="url-card">
+          <div class="label">CloudBeaver (producción)</div>
+          <span style="color:var(--text-muted);font-size:13px;font-family:monospace;">tu-subdominio.miguelangeljaimen.cl</span>
+        </div>
+        <div class="url-card">
+          <div class="label">Puerto interno</div>
+          <span style="color:var(--text-muted);font-size:13px;font-family:monospace;">8978</span>
+        </div>
+      </div>
+
+      <h3>Configurar la conexión a PostgreSQL</h3>
+      <p>La primera vez que abres CloudBeaver te pedirá crear una conexión. Usa estos valores — todos los servicios están en la misma red Docker del compose:</p>
+
+      <pre><code>Driver:    PostgreSQL
+Host:      db             <span class="comment"># nombre del servicio en docker-compose.yml</span>
+Port:      5432
+Database:  portafolio
+User:      postgres
+Password:  &lt;valor de DB_PASS&gt;</code></pre>
+
+      <div class="callout tip">
+        <span class="callout-icon">✅</span>
+        <p>El host es <strong>db</strong> (no <code class="inline">localhost</code>) porque CloudBeaver y PostgreSQL comparten la red interna de Docker Compose y se resuelven por nombre de servicio.</p>
+      </div>
+
+      <h3>Configurar en Coolify</h3>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <h4>Exponer el puerto 8978</h4>
+            <p>En Coolify → tu servicio → <strong>Settings</strong> del contenedor <code class="inline">cloudbeaver</code> → agrega un dominio apuntando al puerto <code class="inline">8978</code>.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <h4>Redeploy</h4>
+            <p>Después de guardar, haz <strong>Deploy</strong> para que Coolify recree el contenedor con la nueva configuración de red.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <h4>Primera vez — crear admin</h4>
+            <p>CloudBeaver te pedirá crear un usuario administrador local en el primer acceso. Este usuario es solo para la UI de CloudBeaver, no tiene relación con el admin de la API.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout warn">
+        <span class="callout-icon">⚠️</span>
+        <p>CloudBeaver tiene acceso completo a la base de datos. Asegúrate de proteger el subdominio con una contraseña fuerte o restringirlo por IP si es posible.</p>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <div style="margin-top:64px;padding-top:24px;border-top:1px solid var(--border);text-align:center;">
+      <p style="font-size:12px;color:var(--text-muted);">Portafolio Monorepo — Angular 21 + NestJS 11 + PostgreSQL 16</p>
+    </div>
+
+  </main>
+</div>
+
+<script>
+  function showTab(e, id) {
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    e.target.classList.add('active');
+  }
+
+  // Highlight active nav link on scroll
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('nav a[href^="#"]');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(l => l.classList.remove('active'));
+        const active = document.querySelector(`nav a[href="#${entry.target.id}"]`);
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { threshold: 0.4 });
+  sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>

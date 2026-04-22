@@ -10,13 +10,26 @@ export class ProjectsService {
   constructor(
     @InjectRepository(Project)
     private readonly repo: Repository<Project>,
-  ) {}
+  ) { }
 
   async findAll(
     page: number,
     limit: number,
   ): Promise<{ data: Project[]; total: number; page: number; limit: number }> {
     const [data, total] = await this.repo.findAndCount({
+      order: { createdAt: 'DESC' },
+      skip: (page - 1) * limit,
+      take: limit,
+    });
+    return { data, total, page, limit };
+  }
+
+  async findAllPublished(
+    page: number,
+    limit: number,
+  ): Promise<{ data: Project[]; total: number; page: number; limit: number }> {
+    const [data, total] = await this.repo.findAndCount({
+      where: { isPublished: true },
       order: { createdAt: 'DESC' },
       skip: (page - 1) * limit,
       take: limit,
@@ -31,7 +44,10 @@ export class ProjectsService {
   }
 
   async create(dto: CreateProjectDto): Promise<Project> {
-    const project = this.repo.create(dto);
+    const project = this.repo.create({
+      ...dto,
+      isPublished: dto.isPublished ?? false,
+    });
     return this.repo.save(project);
   }
 
@@ -41,8 +57,9 @@ export class ProjectsService {
     return this.repo.save(project);
   }
 
-  async remove(id: string): Promise<void> {
+  async togglePublish(id: string): Promise<Project> {
     const project = await this.findOne(id);
-    await this.repo.remove(project);
+    project.isPublished = !project.isPublished;
+    return this.repo.save(project);
   }
 }

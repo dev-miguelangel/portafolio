@@ -1,4 +1,4 @@
-import { IsDateString, IsOptional, IsString, MinLength } from 'class-validator';
+import { IsBoolean, IsDateString, IsOptional, IsString, MinLength } from 'class-validator';
 
 export class CreateNewsletterDto {
   @IsString()
@@ -15,4 +15,8 @@ export class CreateNewsletterDto {
   @IsDateString()
   @IsOptional()
   publishedAt?: string | null;
+
+  @IsBoolean()
+  @IsOptional()
+  isPublished?: boolean;
 }

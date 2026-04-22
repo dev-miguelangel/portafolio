@@ -1,5 +1,4 @@
-import { Component, input } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Component, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IconComponent } from '../icon/icon.component';
 import { ProjectSummary, ProjectStatus } from '../../../core/models/project.model';
@@ -21,9 +20,9 @@ const STATUS_MAP: Record<ProjectStatus, { label: string; classes: string }> = {
 
 @Component({
   selector: 'app-project-card',
-  imports: [CommonModule, RouterLink, IconComponent],
+  imports: [CommonModule, IconComponent],
   template: `
-    <article class="card flex flex-col gap-4 group cursor-pointer" [routerLink]="['/proyectos', project().id]">
+    <article class="card flex flex-col gap-4 group cursor-pointer">
       <div class="flex items-start justify-between gap-3">
         <div class="flex-1 min-w-0">
           <span
@@ -57,39 +56,55 @@ const STATUS_MAP: Record<ProjectStatus, { label: string; classes: string }> = {
         </div>
       }
 
-      <div class="flex items-center gap-3 pt-1 border-t border-white/[0.05]">
-        @if (project().demoUrl) {
-          <a
-            [href]="project().demoUrl!"
-            target="_blank"
-            rel="noopener noreferrer"
-            (click)="$event.stopPropagation()"
-            class="flex items-center gap-1.5 text-xs text-white/40 hover:text-white/70 transition-colors"
-          >
-            <app-icon name="play_circle" [size]="14" />
-            Demo
-          </a>
-        }
-        @if (project().productionUrl) {
-          <a
-            [href]="project().productionUrl!"
-            target="_blank"
-            rel="noopener noreferrer"
-            (click)="$event.stopPropagation()"
-            class="flex items-center gap-1.5 text-xs text-brand-green/70 hover:text-brand-green transition-colors"
-          >
-            <app-icon name="open_in_new" [size]="14" />
-            Ver en producción
-          </a>
-        }
+      <div class="flex flex-col gap-3 pt-3 border-t border-white/[0.05]">
+        <div class="flex items-center gap-2">
+          @if (project().projectHtml) {
+            <button
+              (click)="onViewProject()"
+              class="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg bg-brand-green/20 text-brand-green hover:bg-brand-green/30 transition-colors text-xs font-medium"
+            >
+              <app-icon name="preview" [size]="14" />
+              Ver Proyecto
+            </button>
+          }
+          @if (project().demoUrl) {
+            <a
+              [href]="project().demoUrl!"
+              target="_blank"
+              rel="noopener noreferrer"
+              (click)="$event.stopPropagation()"
+              class="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs text-white/40 hover:text-white/70 hover:bg-white/[0.05] transition-colors"
+              title="Demo"
+            >
+              <app-icon name="play_circle" [size]="14" />
+            </a>
+          }
+          @if (project().productionUrl) {
+            <a
+              [href]="project().productionUrl!"
+              target="_blank"
+              rel="noopener noreferrer"
+              (click)="$event.stopPropagation()"
+              class="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs text-brand-green/70 hover:text-brand-green hover:bg-brand-green/[0.05] transition-colors"
+              title="Ver en producción"
+            >
+              <app-icon name="open_in_new" [size]="14" />
+            </a>
+          }
+        </div>
       </div>
     </article>
   `,
 })
 export class ProjectCardComponent {
   readonly project = input.required<ProjectSummary>();
+  readonly viewProject = output<ProjectSummary>();
 
   get statusConfig() {
     return () => STATUS_MAP[this.project().status];
+  }
+
+  onViewProject(): void {
+    this.viewProject.emit(this.project());
   }
 }

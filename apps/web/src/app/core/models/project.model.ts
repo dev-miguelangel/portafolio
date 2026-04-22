@@ -9,6 +9,8 @@ export interface Project {
   demoUrl: string | null;
   productionUrl: string | null;
   imageUrl: string | null;
+  projectHtml: string | null;
+  isPublished: boolean;
   createdAt: string;
   updatedAt: string;
 }
@@ -24,4 +26,5 @@ export interface ProjectSummary
     | 'demoUrl'
     | 'productionUrl'
     | 'imageUrl'
-  > {}
+    | 'projectHtml'
+  > { }

@@ -3,14 +3,15 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { catchError, EMPTY, map } from 'rxjs';
 import { ProjectsService } from '../../../core/services/projects.service';
 import { ProjectCardComponent } from '../../../shared/components/project-card/project-card.component';
+import { ProjectModalComponent } from '../../../shared/components/project-modal/project-modal.component';
 import { IconComponent } from '../../../shared/components/icon/icon.component';
-import { ProjectStatus } from '../../../core/models/project.model';
+import { ProjectStatus, Project } from '../../../core/models/project.model';
 
 type Filter = 'all' | ProjectStatus;
 
 @Component({
   selector: 'app-projects',
-  imports: [ProjectCardComponent, IconComponent],
+  imports: [ProjectCardComponent, ProjectModalComponent, IconComponent],
   template: `
     <div class="max-w-6xl mx-auto px-6 py-16">
       <h1 class="text-3xl font-bold text-white mb-2">Proyectos</h1>
@@ -39,7 +40,10 @@ type Filter = 'all' | ProjectStatus;
       @if (filteredProjects().length > 0) {
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           @for (project of filteredProjects(); track project.id) {
-            <app-project-card [project]="project" />
+            <app-project-card 
+              [project]="project"
+              (viewProject)="openModal($event)"
+            />
           }
         </div>
       } @else {
@@ -49,12 +53,21 @@ type Filter = 'all' | ProjectStatus;
         </div>
       }
     </div>
+
+    <!-- Modal -->
+    <app-project-modal
+      [project]="selectedProject()"
+      [isOpen]="isModalOpen()"
+      (close)="closeModal()"
+    />
   `,
 })
 export class ProjectsComponent {
   private projectsService = inject(ProjectsService);
 
   readonly activeFilter = signal<Filter>('all');
+  readonly isModalOpen = signal(false);
+  readonly selectedProject = signal<Project | null>(null);
 
   readonly filters: { value: Filter; label: string }[] = [
     { value: 'all', label: 'Todos' },
@@ -78,5 +91,17 @@ export class ProjectsComponent {
       if (filter === 'all') return projects;
       return projects.filter((p) => p.status === filter);
     };
+  }
+
+  openModal(project: any): void {
+    this.projectsService.getById(project.id).subscribe((fullProject) => {
+      this.selectedProject.set(fullProject);
+      this.isModalOpen.set(true);
+    });
+  }
+
+  closeModal(): void {
+    this.isModalOpen.set(false);
+    this.selectedProject.set(null);
   }
 }

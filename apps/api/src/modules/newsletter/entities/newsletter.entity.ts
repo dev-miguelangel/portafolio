@@ -20,8 +20,11 @@ export class Newsletter {
   @Column({ type: 'text' })
   content: string;
 
-  @Column({ nullable: true, type: 'timestamptz' })
-  publishedAt: Date | null;
+  @Column({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
+  publishedAt: Date;
+
+  @Column({ default: false })
+  isPublished: boolean;
 
   @CreateDateColumn()
   createdAt: Date;

@@ -10,15 +10,14 @@ export class NewsletterService {
   constructor(
     @InjectRepository(Newsletter)
     private readonly repo: Repository<Newsletter>,
-  ) {}
+  ) { }
 
   async findAll(
     page: number,
     limit: number,
   ): Promise<{ data: Newsletter[]; total: number; page: number; limit: number }> {
     const [data, total] = await this.repo.findAndCount({
-      select: ['id', 'title', 'summary', 'publishedAt', 'createdAt'],
-      where: { publishedAt: undefined },
+      select: ['id', 'title', 'summary', 'publishedAt', 'isPublished', 'createdAt'],
       order: { publishedAt: 'DESC' },
       skip: (page - 1) * limit,
       take: limit,
@@ -30,7 +29,7 @@ export class NewsletterService {
     const [data, total] = await this.repo
       .createQueryBuilder('n')
       .select(['n.id', 'n.title', 'n.summary', 'n.publishedAt', 'n.createdAt'])
-      .where('n.publishedAt IS NOT NULL')
+      .where('n.isPublished = :isPublished', { isPublished: true })
       .orderBy('n.publishedAt', 'DESC')
       .skip((page - 1) * limit)
       .take(limit)
@@ -47,7 +46,8 @@ export class NewsletterService {
   async create(dto: CreateNewsletterDto): Promise<Newsletter> {
     const item = this.repo.create({
       ...dto,
-      publishedAt: dto.publishedAt ? new Date(dto.publishedAt) : null,
+      publishedAt: dto.publishedAt ? new Date(dto.publishedAt) : new Date(),
+      isPublished: dto.isPublished ?? false,
     });
     return this.repo.save(item);
   }
@@ -60,6 +60,12 @@ export class NewsletterService {
         ? (dto.publishedAt ? new Date(dto.publishedAt) : null)
         : item.publishedAt,
     });
+    return this.repo.save(item);
+  }
+
+  async togglePublish(id: string): Promise<Newsletter> {
+    const item = await this.findOne(id);
+    item.isPublished = !item.isPublished;
     return this.repo.save(item);
   }
 

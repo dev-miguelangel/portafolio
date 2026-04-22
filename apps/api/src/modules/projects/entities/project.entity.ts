@@ -28,11 +28,17 @@ export class Project {
   @Column({ nullable: true, type: 'varchar' })
   demoUrl: string | null;
 
+  @Column({ default: false })
+  isPublished: boolean;
+
   @Column({ nullable: true, type: 'varchar' })
   productionUrl: string | null;
 
   @Column({ nullable: true, type: 'varchar' })
   imageUrl: string | null;
+
+  @Column({ nullable: true, type: 'text' })
+  projectHtml: string | null;
 
   @CreateDateColumn()
   createdAt: Date;

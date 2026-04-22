@@ -3,7 +3,8 @@ export interface Newsletter {
   title: string;
   summary: string;
   content: string;
-  publishedAt: string | null;
+  publishedAt: string;
+  isPublished: boolean;
   createdAt: string;
   updatedAt: string;
 }
@@ -11,8 +12,8 @@ export interface Newsletter {
 export interface NewsletterSummary
   extends Pick<
     Newsletter,
-    'id' | 'title' | 'summary' | 'publishedAt' | 'createdAt'
-  > {}
+    'id' | 'title' | 'summary' | 'publishedAt' | 'isPublished' | 'createdAt'
+  > { }
 
 export interface Subscriber {
   id: string;

@@ -20,7 +20,16 @@ import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 
 @Controller('newsletters')
 export class NewsletterController {
-  constructor(private readonly service: NewsletterService) {}
+  constructor(private readonly service: NewsletterService) { }
+
+  @Get('admin')
+  @UseGuards(JwtAuthGuard)
+  findAllAdmin(
+    @Query('page', new ParseIntPipe({ optional: true })) page = 1,
+    @Query('limit', new ParseIntPipe({ optional: true })) limit = 10,
+  ) {
+    return this.service.findAll(page, limit);
+  }
 
   @Get()
   findAll(
@@ -48,6 +57,12 @@ export class NewsletterController {
     @Body() dto: UpdateNewsletterDto,
   ) {
     return this.service.update(id, dto);
+  }
+
+  @Patch(':id/toggle-publish')
+  @UseGuards(JwtAuthGuard)
+  togglePublish(@Param('id', ParseUUIDPipe) id: string) {
+    return this.service.togglePublish(id);
   }
 
   @Delete(':id')

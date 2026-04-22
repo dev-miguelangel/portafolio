@@ -20,14 +20,23 @@ import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 
 @Controller('projects')
 export class ProjectsController {
-  constructor(private readonly service: ProjectsService) {}
+  constructor(private readonly service: ProjectsService) { }
+
+  @Get('admin')
+  @UseGuards(JwtAuthGuard)
+  findAllAdmin(
+    @Query('page', new ParseIntPipe({ optional: true })) page = 1,
+    @Query('limit', new ParseIntPipe({ optional: true })) limit = 12,
+  ) {
+    return this.service.findAll(page, limit);
+  }
 
   @Get()
   findAll(
     @Query('page', new ParseIntPipe({ optional: true })) page = 1,
     @Query('limit', new ParseIntPipe({ optional: true })) limit = 12,
   ) {
-    return this.service.findAll(page, limit);
+    return this.service.findAllPublished(page, limit);
   }
 
   @Get(':id')
@@ -45,6 +54,12 @@ export class ProjectsController {
   @UseGuards(JwtAuthGuard)
   update(@Param('id', ParseUUIDPipe) id: string, @Body() dto: UpdateProjectDto) {
     return this.service.update(id, dto);
+  }
+
+  @Patch(':id/toggle-publish')
+  @UseGuards(JwtAuthGuard)
+  togglePublish(@Param('id', ParseUUIDPipe) id: string) {
+    return this.service.togglePublish(id);
   }
 
   @Delete(':id')

@@ -1,5 +1,6 @@
 import {
   IsArray,
+  IsBoolean,
   IsEnum,
   IsOptional,
   IsString,
@@ -37,4 +38,12 @@ export class CreateProjectDto {
   @IsUrl()
   @IsOptional()
   imageUrl?: string | null;
+
+  @IsString()
+  @IsOptional()
+  projectHtml?: string | null;
+
+  @IsBoolean()
+  @IsOptional()
+  isPublished?: boolean;
 }

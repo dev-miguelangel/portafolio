@@ -62,4 +62,9 @@ export class ProjectsService {
     project.isPublished = !project.isPublished;
     return this.repo.save(project);
   }
+
+  async remove(id: string): Promise<void> {
+    const project = await this.findOne(id);
+    await this.repo.remove(project);
+  }
 }

@@ -32,12 +32,16 @@ services:
       JWT_EXPIRES_IN: 7d
     expose:
       - "3000"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:3000/api || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
 
   web:
     image: ghcr.io/dev-miguelangel/portafolio-web:latest
     restart: unless-stopped
-    depends_on:
-      - api
     expose:
       - "80"
 
@@ -45,8 +49,10 @@ services:
     image: ghcr.io/dev-miguelangel/portafolio-nginx:latest
     restart: unless-stopped
     depends_on:
-      - web
-      - api
+      api:
+        condition: service_healthy
+      web:
+        condition: service_started
     expose:
       - "80"
 
